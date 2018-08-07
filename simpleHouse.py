@@ -2,8 +2,8 @@ import numpy as np
 np.random.seed(1)
 
 
-X = np.array(([2, 9], [1, 5], [3, 6]), dtype=float)
-y = np.array(([92], [86], [89]), dtype=float)
+X = np.array(([2, 9, 1], [1, 5, 1], [3, 6, 0], [3, 6, -1],  [1, 3, 2]), dtype=float)
+y = np.array(([92], [86], [50], [100], [40]), dtype=float)
 
 maxY = np.max(y)
 
@@ -14,9 +14,9 @@ y = y / maxY
 class NeuralNetwork(object):
     def __init__(self):
         # Hyperparemeters
-        self.input_size = 2
-        self.hidden_size = 3
-        self.output_size = 1
+        self.input_size = X.shape[1]
+        self.hidden_size = X.shape[0]
+        self.output_size = y.shape[1]
 
         # Weights for input -> hidden
         self.W1 = np.random.randn(self.input_size, self.hidden_size)
@@ -31,7 +31,7 @@ class NeuralNetwork(object):
 
     def forward(self, X):
 
-        for i in range(1000000):
+        for i in range(10000):
             # Dot product of X (input) and first set of 3 x 2 weights
             z1 = np.dot(X, self.W1)
             # Applying the activation function
@@ -48,7 +48,7 @@ class NeuralNetwork(object):
             error_w1 = delta_w2.dot(self.W2.T)
             delta_w1 = error_w1 * self.sigmoid_deriv(o_z1)
 
-            # Atualize the Weight Values
+            # Update the Weight Values
             self.W2 += o_z1.dot(delta_w2)
             self.W1 += X.T.dot(delta_w1)
 
